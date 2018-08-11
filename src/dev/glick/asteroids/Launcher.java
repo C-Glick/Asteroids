@@ -5,7 +5,8 @@ import dev.glick.asteroids.display.Display;
 public class Launcher {
 
 	public static void main(String[] args) {
-		new Game("Title!",500,500);
+		Game game =new Game("Title!",500,500);
+		game.start();
 	}
 
 }
