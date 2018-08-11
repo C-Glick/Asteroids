@@ -7,11 +7,12 @@ import javax.swing.JFrame;
 
 public class Display {
 
+	private String title;
+	private int width, height;
+	
 	private JFrame frame;
 	private Canvas canvas;
 	
-	private String title;
-	private int width, height;
 	
 	public Display(String title, int width, int height) {
 		this.title = title;
