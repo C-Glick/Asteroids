@@ -1,5 +1,6 @@
 package dev.glick.asteroids;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
@@ -72,10 +73,13 @@ public class Game implements Runnable{
 			display.getCanvas().createBufferStrategy(3);
 			return;
 		}
-		
 		g = bs.getDrawGraphics();							//get the graphics drawer from the buffer strat
+		g.clearRect(0, 0, width, height);
 		
-		g.fillRect(0, 0, width, width);
+		g.setColor(Color.red);
+		g.fillRect(30, 59, 100, 100);
+		g.setColor(Color.green);
+		g.fillRect(50, 100, 90, 200);
 		
 		bs.show();											//advance the drawn frame in the buffers eventually to the canvas
 		g.dispose();										//get rid of the graphics object to keep things clean in memory
