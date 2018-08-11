@@ -4,7 +4,7 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-
+//this class handles the display window that the game runs it
 public class Display {
 
 	private String title;
@@ -22,8 +22,7 @@ public class Display {
 		createDisplay();
 	}
 	
-	
-	
+	//Initialize the display and all its parameters
 	private void createDisplay() {
 		frame = new JFrame(title);
 		frame.setSize(width, height);
@@ -32,13 +31,14 @@ public class Display {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
+		//create a new canvas for the graphics to be drawn on
 		canvas = new Canvas();
 		canvas.setPreferredSize(new Dimension(width,height));
 		canvas.setMaximumSize(new Dimension(width,height));
 		canvas.setMinimumSize(new Dimension(width,height));
 		
 		frame.add(canvas);
-		frame.pack();
+		frame.pack();				//packs the frame so the canvas fits appropriately
 		
 	}
 	public Canvas getCanvas() {
