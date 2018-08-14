@@ -2,6 +2,7 @@ package dev.glick.asteroids;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.awt.image.BufferStrategy;
 
 import dev.glick.asteroids.display.Display;
@@ -13,6 +14,8 @@ public class Game implements Runnable{
 	public int width,height;
 	public String title;
 	private boolean running = false;
+	private double location;
+	private double speed;
 	
 	private Display display;
 	private Thread thread;
@@ -50,20 +53,41 @@ public class Game implements Runnable{
 	public void run() {
 		init();
 		
-		while(running) {						//game loop
-			tick();								//update all variables and objects
-			render();							//draw to the screen to display to the user
-		}
+		int fps =60;
+		double timePerTick = 1e9 / fps;
+		double delta =0;
+		long now;
+		long lastTime = System.nanoTime();
 		
+		while(running) {						//game loop
+			now= System.nanoTime();
+			delta += (now-lastTime) /timePerTick;
+			lastTime =now;
+		
+			
+			if(delta >=1) {
+				tick();								//update all variables and objects
+				render();							//draw to the screen to display to the user
+				delta--;
+			}
+		}
 		stop();									//when running is false stop the game
 	}
 	
 	private void init() {									//initiates the game 
 		display = new Display(title,width,height);
+		Assets assets = new Assets();
+		assets.init();
 
 	}
-	
+	int x=0;
 	private void tick() {									//update all variables and objects the game uses
+		double speedX = Assets.ship.speedX;
+		double speedY = Assets.ship.speedY;
+		Assets.ship.speedX = speedX +Assets.ship.accelX;
+		Assets.ship.speedY = speedY +Assets.ship.accelY;
+		
+		x++;
 		
 	}
 	
@@ -76,11 +100,16 @@ public class Game implements Runnable{
 		g = bs.getDrawGraphics();							//get the graphics drawer from the buffer strat
 		g.clearRect(0, 0, width, height);
 		
-		g.setColor(Color.red);
-		g.fillRect(30, 59, 100, 100);
-		g.setColor(Color.green);
-		g.fillRect(50, 100, 90, 200);
+		g.setColor(Color.black);
+		g.fillRect(0, 0, width, height);
 		
+		g.setColor(Color.white);
+		
+		Polygon p = Assets.ship.polygon;
+		p.translate((int) Math.round(Assets.ship.speedX), (int) Math.round(Assets.ship.speedY));
+		
+		g.fillPolygon(p);
+		Assets.ship.updatePos();
 		bs.show();											//advance the drawn frame in the buffers eventually to the canvas
 		g.dispose();										//get rid of the graphics object to keep things clean in memory
 		
