@@ -59,7 +59,7 @@ public class Game implements Runnable{
 		long now;
 		long lastTime = System.nanoTime();
 		
-		while(running) {						//game loop
+		while(running) {							//game loop
 			now= System.nanoTime();
 			delta += (now-lastTime) /timePerTick;
 			lastTime =now;
@@ -71,7 +71,7 @@ public class Game implements Runnable{
 				delta--;
 			}
 		}
-		stop();									//when running is false stop the game
+		stop();										//when running is false stop the game
 	}
 	
 	private void init() {									//initiates the game 
@@ -81,7 +81,18 @@ public class Game implements Runnable{
 
 	}
 	int x=0;
+	double angle;
+
 	private void tick() {									//update all variables and objects the game uses
+		if(angle>=360) {
+			angle=0;
+		}else {
+			angle++;
+		}
+		
+		Assets.ship.setAngle(angle);
+		
+		Assets.ship.setXY(100, 100);
 		double speedX = Assets.ship.speedX;
 		double speedY = Assets.ship.speedY;
 		Assets.ship.speedX = speedX +Assets.ship.accelX;
@@ -106,10 +117,10 @@ public class Game implements Runnable{
 		g.setColor(Color.white);
 		
 		Polygon p = Assets.ship.polygon;
-		p.translate((int) Math.round(Assets.ship.speedX), (int) Math.round(Assets.ship.speedY));
 		
-		g.fillPolygon(p);
+		g.drawPolygon(p);
 		Assets.ship.updatePos();
+		
 		bs.show();											//advance the drawn frame in the buffers eventually to the canvas
 		g.dispose();										//get rid of the graphics object to keep things clean in memory
 		
