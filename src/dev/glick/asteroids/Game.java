@@ -21,12 +21,18 @@ public class Game implements Runnable{
 	private Thread thread;
 	private BufferStrategy bs;			//buffer strat is the number of buffers between drawing and displaying
 	private Graphics g;					//the object that does the drawing
+	private KeyManager keyManager;
 	
 	public Game(String title,int width, int height) {
 		this.width = width;
 		this.height= height;
 		this.title=title;
+		this.keyManager = new KeyManager();
 		
+	}
+	
+	public KeyManager getKeyManager() {
+		return keyManager;
 	}
 												//starts the separate thread for the game to run on, calls the run method 
 	public synchronized void start() {
@@ -76,7 +82,8 @@ public class Game implements Runnable{
 	
 	private void init() {									//initiates the game 
 		display = new Display(title,width,height);
-		Assets assets = new Assets();
+		display.getFrame().addKeyListener(keyManager);
+		Assets assets = new Assets(this);
 		assets.init();
 
 	}
@@ -84,13 +91,7 @@ public class Game implements Runnable{
 	double angle;
 
 	private void tick() {									//update all variables and objects the game uses
-		if(angle>=360) {
-			angle=0;
-		}else {
-			angle++;
-		}
-		
-		Assets.ship.setAngle(angle);
+		keyManager.tick();
 		
 		Assets.ship.setXY(100, 100);
 		double speedX = Assets.ship.speedX;
@@ -99,7 +100,8 @@ public class Game implements Runnable{
 		Assets.ship.speedY = speedY +Assets.ship.accelY;
 		
 		x++;
-		
+		Assets.ship.tick();
+
 	}
 	
 	private void render() {									//draws graphics to the screen for user
@@ -119,12 +121,8 @@ public class Game implements Runnable{
 		Polygon p = Assets.ship.polygon;
 		
 		g.drawPolygon(p);
-		Assets.ship.updatePos();
 		
 		bs.show();											//advance the drawn frame in the buffers eventually to the canvas
 		g.dispose();										//get rid of the graphics object to keep things clean in memory
-		
-		
-		
 	}
 }

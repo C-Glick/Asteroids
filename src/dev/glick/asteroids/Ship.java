@@ -3,6 +3,7 @@ package dev.glick.asteroids;
 import java.awt.Polygon;
 
 public class Ship {
+	private Game game;
 	public Polygon polygon;
 	public int globX, globY;
 	public double speedX,speedY;
@@ -14,7 +15,8 @@ public class Ship {
 	int[][] test= {{5,5},{1,1}};
 
 	
-	public Ship() {
+	public Ship(Game game) {
+		this.game = game;
 		accelX=0;
 		accelY=0;
 		speedX=0;
@@ -23,7 +25,30 @@ public class Ship {
 		polygon = new Polygon(localX,localY, 4);
 		}
 	
-	public void updatePos() {
+	public void tick() {
+		if(game.getKeyManager().up) {
+			
+		}
+		if(game.getKeyManager().right) {
+			if(angle>=360) {
+				angle=0;
+			}else {
+				angle=angle+5;
+			}
+		}
+		if(game.getKeyManager().left) {
+			if(angle>=360) {
+				angle=0;
+			}else {
+				angle=angle-5;
+			}
+		}
+		if(game.getKeyManager().space) {
+			
+		}
+		
+		
+		
 		//rotation
 		double radians = Math.toRadians(angle);
 		double[][] rotationMatrix = {{Math.cos(radians), -(Math.sin(radians))},
