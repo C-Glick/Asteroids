@@ -18,6 +18,8 @@ public class Calc {
 
 	        return product;
 	    }
+	 
+	 																//convert double array to int array by rounding to int
 	 public static int[] convertArray(double[] array) {
 		 int[] intArray = new int[array.length];
 		 for (int i=0; i<intArray.length; ++i) {
