@@ -5,7 +5,9 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.image.BufferStrategy;
 
+import dev.glick.asteroids.display.Brush;
 import dev.glick.asteroids.display.Display;
+import dev.glick.asteroids.display.Line;
 
 // the main class for running the game,
 //this handles starting the game thread and rendering to the screen
@@ -19,6 +21,7 @@ public class Game implements Runnable{
 	private Thread thread;
 	private BufferStrategy bs;			//buffer strat is the number of buffers between drawing and displaying
 	private Graphics g;					//the object that does the drawing
+	private Brush b;					//custom brush class that extends the graphics class
 	private KeyManager keyManager;
 	private Ship ship;
 	
@@ -91,7 +94,13 @@ public class Game implements Runnable{
 	private void tick() {									//update all variables and objects the game uses
 		keyManager.tick();									//updates key presses
 		ship.tick();										//updates the ships variables
-
+		if(!ship.laserArray.isEmpty()) {
+			for(int i=0; i<ship.laserArray.size();i++) {
+				Laser laser = ship.laserArray.get(i);
+				laser.tick();
+			}
+		}
+		
 		if(ship.globX>width) {								//senses if the ship has gone off the edge of the screen
 			ship.globX = 0;									//puts the ship on the opposite side of screen
 		}else if(ship.globX<0) {
@@ -113,6 +122,7 @@ public class Game implements Runnable{
 			return;
 		}
 		g = bs.getDrawGraphics();							//get the graphics drawer from the buffer strat
+		b = new Brush(g);
 		g.clearRect(0, 0, width, height);
 		
 		g.setColor(Color.black);
@@ -121,6 +131,13 @@ public class Game implements Runnable{
 		g.setColor(Color.white);
 		Polygon p = ship.polygon;
 		g.drawPolygon(p);
+		
+		if(!ship.laserArray.isEmpty()) {
+			for(int i=0; i<ship.laserArray.size();i++) {
+				Line line = ship.laserArray.get(i).getLine();
+				b.drawLine(line);
+			}
+		}
 		
 		
 		bs.show();											//advance the drawn frame in the buffers eventually to the canvas

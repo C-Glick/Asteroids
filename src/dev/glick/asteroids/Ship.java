@@ -1,6 +1,11 @@
 package dev.glick.asteroids;
 
 import java.awt.Polygon;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import dev.glick.asteroids.display.Line;
 
 public class Ship {
 	private Game game;
@@ -13,9 +18,14 @@ public class Ship {
 	int[] localX = {-20,0,20,0};									//local vertices of the ship
 	int[] localY = {20,-20,20,10};
 	double[][] localXY= {{-20,0,20,0},{20,-20,20,10}};
+	double tipX;
+	double tipY;
+	private long lastLaser=System.currentTimeMillis();
+	List<Laser> laserArray;
 
 	
 	public Ship(Game game) {
+		laserArray = new ArrayList<>();
 		this.game = game;
 		globX=1920/2;												//sets the starting location of the ship to the center of the screen
 		globY=1080/2;
@@ -33,6 +43,8 @@ public class Ship {
 			speedX= speedX- (Math.sin(radians)*accel);				//if pressing up set the x and y speeds to the equal the accel, accel is the hypotenuse 
 			speedY= speedY+ (Math.cos(radians)*accel);			
 		}
+		globY = globY - (int) Math.round(speedY);													//set the global x and y based on the speedX and speedY
+		globX = globX - (int) Math.round(speedX);	
 		if(game.getKeyManager().right) {							// if right increase the angle, if more that 360 set to 0
 			if(angle>=360) {
 				angle=0;
@@ -49,6 +61,17 @@ public class Ship {
 		}
 		if(game.getKeyManager().space) {
 			
+			long now = System.currentTimeMillis();
+			if (now-lastLaser > 300) {
+				
+				double xDist = Math.sin(radians)*18;
+				double yDist = Math.cos(radians)*18;
+				
+				Laser laser = new Laser(game, radians,globX+xDist,globY-yDist);
+				laserArray.add(laser);
+				lastLaser = now;
+			}
+			
 		}
 		
 		
@@ -63,11 +86,11 @@ public class Ship {
 		int[] rotatedX = Calc.convertArray(rotatedLocalXY[0]);										//convert the matrix to two arrays for the polygon object
 		int[] rotatedY = Calc.convertArray(rotatedLocalXY[1]);
 		
+		
 		polygon = new Polygon(rotatedX,rotatedY, 4);												//set the class polygon to a new rotated polygon
 		
 		//translation
-		globY = globY - (int) Math.round(speedY);													//set the global x and y based on the speedX and speedY
-		globX = globX - (int) Math.round(speedX);										
+											
 		polygon.translate(globX, globY);															//translate the ship from 0,0 to globalX globalY
 	}
 }
