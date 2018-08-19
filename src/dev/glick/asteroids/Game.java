@@ -1,12 +1,14 @@
 package dev.glick.asteroids;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.image.BufferStrategy;
 
 import dev.glick.asteroids.display.Brush;
 import dev.glick.asteroids.display.Display;
+import dev.glick.asteroids.display.GUI;
 import dev.glick.asteroids.display.Line;
 
 // the main class for running the game,
@@ -24,6 +26,7 @@ public class Game implements Runnable{
 	private Brush b;					//custom brush class that extends the graphics class
 	private KeyManager keyManager;
 	private Ship ship;
+	private GUI gui;
 	
 	public Game(String title,int width, int height) {
 		this.width = width;
@@ -88,12 +91,13 @@ public class Game implements Runnable{
 		Assets assets = new Assets(this);						//creates the assets object
 		assets.init();											//initiates the assets
 		this.ship = Assets.ship;								//sets the game ship to the same as the assets ship to make it easier to reference later
-
+		this.gui = Assets.gui;
 
 	}
 	private void tick() {									//update all variables and objects the game uses
 		keyManager.tick();									//updates key presses
 		ship.tick();										//updates the ships variables
+		gui.tick();
 		if(!ship.laserArray.isEmpty()) {
 			for(int i=0; i<ship.laserArray.size();i++) {
 				Laser laser = ship.laserArray.get(i);
@@ -125,13 +129,17 @@ public class Game implements Runnable{
 		b = new Brush(g);
 		g.clearRect(0, 0, width, height);
 		
+		//start rendering-------------------------
+		//background
 		g.setColor(Color.black);
 		g.fillRect(0, 0, width, height);
 		
+		//ship
 		g.setColor(Color.white);
 		Polygon p = ship.polygon;
 		g.drawPolygon(p);
 		
+		//lasers
 		if(!ship.laserArray.isEmpty()) {
 			for(int i=0; i<ship.laserArray.size();i++) {
 				Line line = ship.laserArray.get(i).getLine();
@@ -139,7 +147,32 @@ public class Game implements Runnable{
 			}
 		}
 		
+		//Asteroids
+		Asteroid rock = new Asteroid(5, 5);
+		g.drawPolygon(rock.polygon);
 		
+		//GUI
+		//lives
+		if(gui.lives != 0) {
+			int[] holderX = ship.localX;
+			int[] holderY = ship.localY;
+			Polygon holder = new Polygon(holderX, holderY, 4);
+			holder.translate(70, 50);
+			for(int i=0; i<gui.lives; i++) {
+				g.drawPolygon(holder);
+				holder.translate(50, 0);
+			}
+		}
+		
+		//score / text
+		g.setFont(new Font("Courier New", Font.PLAIN, 20));
+		
+		g.drawString("Score: "+ gui.score, 80, 100);
+		g.drawString("Time: "+ gui.time, 1750, 100);
+		g.setFont(new Font("Courier New", Font.PLAIN, 50));
+
+		
+		//end rendering------------------------------
 		bs.show();											//advance the drawn frame in the buffers eventually to the canvas
 		g.dispose();										//get rid of the graphics object to keep things clean in memory
 	}
