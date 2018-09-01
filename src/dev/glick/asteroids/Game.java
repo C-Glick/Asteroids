@@ -24,9 +24,11 @@ public class Game implements Runnable{
 	private BufferStrategy bs;			//buffer strat is the number of buffers between drawing and displaying
 	private Graphics g;					//the object that does the drawing
 	private Brush b;					//custom brush class that extends the graphics class
+	private Assets assets;
 	private KeyManager keyManager;
 	private Ship ship;
 	private GUI gui;
+	private Collision collision;
 	
 	public Game(String title,int width, int height) {
 		this.width = width;
@@ -38,6 +40,17 @@ public class Game implements Runnable{
 	
 	public KeyManager getKeyManager() {
 		return keyManager;
+	}
+	
+	public Ship getShip() {
+		return ship;
+	}
+	
+	public GUI getGui() {
+		return gui;
+	}
+	public Assets getAssets() {
+		return assets;
 	}
 												//starts the separate thread for the game to run on, calls the run method 
 	public synchronized void start() {
@@ -88,16 +101,19 @@ public class Game implements Runnable{
 	private void init() {										//initiates the game 
 		display = new Display(title,width,height);
 		display.getFrame().addKeyListener(keyManager);			//adds a key listener to the display to sense key presses
-		Assets assets = new Assets(this);						//creates the assets object
+		assets = new Assets(this);						//creates the assets object
 		assets.init();											//initiates the assets
 		this.ship = Assets.ship;								//sets the game ship to the same as the assets ship to make it easier to reference later
 		this.gui = Assets.gui;
+		this.collision = Assets.collision;
+		collision.init();
 
 	}
 	private void tick() {									//update all variables and objects the game uses
 		keyManager.tick();									//updates key presses
 		ship.tick();										//updates the ships variables
 		gui.tick();
+		collision.tick();
 		if(!ship.laserArray.isEmpty()) {
 			for(int i=0; i<ship.laserArray.size();i++) {
 				Laser laser = ship.laserArray.get(i);
