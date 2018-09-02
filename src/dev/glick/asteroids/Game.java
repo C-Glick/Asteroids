@@ -29,6 +29,7 @@ public class Game implements Runnable{
 	private Ship ship;
 	private GUI gui;
 	private Collision collision;
+	private AsteroidMang asteroidMang;
 	
 	public Game(String title,int width, int height) {
 		this.width = width;
@@ -106,6 +107,7 @@ public class Game implements Runnable{
 		this.ship = Assets.ship;								//sets the game ship to the same as the assets ship to make it easier to reference later
 		this.gui = Assets.gui;
 		this.collision = Assets.collision;
+		this.asteroidMang = new AsteroidMang(this);
 		collision.init();
 
 	}
@@ -114,10 +116,21 @@ public class Game implements Runnable{
 		ship.tick();										//updates the ships variables
 		gui.tick();
 		collision.tick();
+		asteroidMang.tick();
+		
+		//lasers
 		if(!ship.laserArray.isEmpty()) {
 			for(int i=0; i<ship.laserArray.size();i++) {
 				Laser laser = ship.laserArray.get(i);
 				laser.tick();
+			}
+		}
+
+		//asteroids
+		if(!asteroidMang.asteroidArray.isEmpty()) {
+			for(int i=0; i<asteroidMang.asteroidArray.size(); i++) {
+				Asteroid asteroid = asteroidMang.asteroidArray.get(i);
+				asteroid.tick();
 			}
 		}
 		
@@ -164,8 +177,12 @@ public class Game implements Runnable{
 		}
 		
 		//Asteroids
-		Asteroid rock = new Asteroid(5, 5);
-		g.drawPolygon(rock.polygon);
+		if(!asteroidMang.asteroidArray.isEmpty()) {
+			for(int i=0; i<asteroidMang.asteroidArray.size();i++) {
+				Polygon poly =asteroidMang.asteroidArray.get(i).getPolygon();
+				g.drawPolygon(poly);
+			}
+		}
 		
 		//GUI
 		//lives

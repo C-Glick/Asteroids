@@ -4,7 +4,7 @@ public class GUI {
 
 	public int lives;
 	public int score;
-	private int frames;
+	public int frames;
 	public int time;
 	
 	public GUI() {

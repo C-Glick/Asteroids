@@ -1,5 +1,6 @@
 package dev.glick.asteroids;
 
+import java.util.ArrayList;
 import java.util.List;
 import dev.glick.asteroids.display.GUI;
 
@@ -15,18 +16,30 @@ public class AsteroidMang {
 	public AsteroidMang(Game game) {
 		this.game = game;
 		this.gui = game.getGui();
-		spawnRate = 10;
-		speedFactor = 30;
+		asteroidArray = new ArrayList<>();
+		spawnRate = 120;
+		speedFactor = 10;
 	}
 	
 	public void tick() {
-		if (gui.time% spawnRate == 0) {
-			Asteroid asteroid = new Asteroid((int) Math.round(Math.random()*speedFactor),(int) Math.round(Math.random()*speedFactor));
+		if (gui.frames % spawnRate == 0) {
+			Asteroid asteroid = new Asteroid((int) Math.round(randomSpeed()),(int) Math.round(randomSpeed()));
 			asteroidArray.add(asteroid);
 		}
 		
 		if(asteroidArray.isEmpty()==false) {
 			//update all asteroid pos.
 		}
+	}
+	
+	public void createAsteroid() {
+		Asteroid asteroid = new Asteroid((int) Math.round(randomSpeed()),(int) Math.round(randomSpeed()));
+		asteroidArray.add(asteroid);
+	}
+	
+	private double randomSpeed() {
+		double result = (Math.random()*speedFactor)-(speedFactor/2);
+		
+		return result;
 	}
 }
