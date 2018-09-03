@@ -10,8 +10,8 @@ public class GUI {
 	public GUI() {
 		lives =3;
 		score =0;
-		time =1;
-		frames =60;
+		time =0;
+		frames =1;
 	}
 	
 	public void tick(){

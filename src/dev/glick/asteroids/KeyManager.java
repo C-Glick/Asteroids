@@ -6,16 +6,16 @@ import java.awt.event.KeyListener;
 public class KeyManager implements KeyListener {
 	
 	private boolean[] keys;							//an array of all keys
-	public boolean up, left, right, space;			//all the keys this program cares about
+	public boolean up,w, left,a, right,d, space;			//all the keys this program cares about
 	
 	public KeyManager() {
 		keys = new boolean[256];					//sets the size of the keys array
 	}
 
-	public void tick() {							//this method is run many times per second (dependent on the fps)
-		up = keys[KeyEvent.VK_UP];					//sets the up boolean to whatever the entery in keys is at the "up arrow" key code
-		left = keys[KeyEvent.VK_LEFT];
-		right = keys[KeyEvent.VK_RIGHT];
+	public void tick() {													//this method is run many times per second (dependent on the fps)
+		up = keys[KeyEvent.VK_UP] | keys[KeyEvent.VK_W];					//sets the up boolean to whatever the entery in keys is at the "up arrow" key code
+		left = keys[KeyEvent.VK_LEFT] | keys[KeyEvent.VK_A];
+		right = keys[KeyEvent.VK_RIGHT] | keys[KeyEvent.VK_D];
 		space = keys[KeyEvent.VK_SPACE];
 
 	}

@@ -19,6 +19,30 @@ public class Calc {
 	        return product;
 	    }
 	 
+	 public static double[][] multiplyMatrix(double[][] matrix, double factor) {
+		 double[][] result = new double[matrix[0].length][matrix[1].length];
+		 for (int i=0; i<matrix.length; i++) {
+			 for(int k=0; k<matrix[i].length; k++) {
+				 double a = matrix[i][k];
+				 double x = a*factor;
+				 result [i][k] =x;
+			 }
+		 }
+		 return result;
+	 }
+	 
+	 public static int[][] multiplyMatrix(int[][] matrix, int factor) {
+		 int[][] result = new int[matrix[0].length][matrix[1].length];
+		 for (int i=0; i<matrix.length; i++) {
+			 for(int k=0; k<matrix[i].length; k++) {
+				 int a = matrix[i][k];
+				 int x = a*factor;
+				 result [i][k] =x;
+			 }
+		 }
+		 return result;
+	 }
+	 
 	 																//convert double array to int array by rounding to int
 	 public static int[] convertArray(double[] array) {
 		 int[] intArray = new int[array.length];

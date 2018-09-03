@@ -1,5 +1,7 @@
 package dev.glick.asteroids;
 
+import java.awt.geom.Line2D;
+
 import dev.glick.asteroids.display.Line;
 
 public class Laser {
@@ -44,6 +46,10 @@ public class Laser {
 	}
 	public Line getLine() {
 		return line;
+	}
+	
+	public void remove() {
+		game.getShip().laserArray.remove(this);
 	}
 	
 }

@@ -9,6 +9,7 @@ public class Collision {
 	Rectangle playerBox;
 	List<Laser> laserArray;
 	List<Asteroid> asteroidArray;
+	AsteroidMang asteroidMang;
 	
 	public Collision(Game game) {
 		this.game = game;
@@ -20,11 +21,38 @@ public class Collision {
 		
 		laserArray = game.getShip().laserArray;
 		
-		asteroidArray = game.getAssets().asteroidMang.asteroidArray;
+		asteroidMang = game.getAsteroidMang();
+		asteroidArray = asteroidMang.asteroidArray;
 	}
 	
 	public void tick() {
-		 
+		//update player box
+		playerBox= player.polygon.getBounds();
+		
+		//check if asteroid intersects player box
+		if (!asteroidArray.isEmpty()) {
+			for (int i=0; i<asteroidArray.size();i++) {
+				Asteroid asteroid = asteroidArray.get(i);
+				if (asteroid.polygon.intersects(playerBox)) {
+					player.kill();
+				}			
+			}
+		}
+		
+		//check if any asteroids are intersecting lasers
+		if (!asteroidArray.isEmpty() && !laserArray.isEmpty()) {
+			for (int i=0; i<asteroidArray.size();i++) {
+				Asteroid asteroid = asteroidArray.get(i);
+				for(int j=0; j<laserArray.size();j++) {
+					Laser laser = laserArray.get(j);
+					if (asteroid.polygon.getBounds().intersectsLine(laser.line)){
+						asteroid.destroy();
+						laser.remove();
+				}
+				
+				}			
+			}
+		}
 	}
 
 }

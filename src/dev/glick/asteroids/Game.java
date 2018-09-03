@@ -53,6 +53,9 @@ public class Game implements Runnable{
 	public Assets getAssets() {
 		return assets;
 	}
+	public AsteroidMang getAsteroidMang() {
+		return asteroidMang;
+	}
 												//starts the separate thread for the game to run on, calls the run method 
 	public synchronized void start() {
 		if(running)								//if the game is already running ignore this code

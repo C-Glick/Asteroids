@@ -34,6 +34,10 @@ public class Ship {
 		polygon = new Polygon(localX,localY, 4);					//creates a new polygon to draw in the starting location
 		}
 	
+	public void kill() {
+		System.out.println("ship killed");
+	}
+	
 	public void tick() {											//updates all variables for the ship
 		double radians = Math.toRadians(angle);						//converts angle to radians
 		
