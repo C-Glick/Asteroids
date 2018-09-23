@@ -15,7 +15,7 @@ public class Assets {
 	public void init() {
 		
 		ship = new Ship(game);
-		gui = new GUI();
+		gui = new GUI(game);
 		collision = new Collision(game);
 		asteroidMang = new AsteroidMang(game);
 		

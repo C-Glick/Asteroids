@@ -36,6 +36,9 @@ public class Ship {
 	
 	public void kill() {
 		System.out.println("ship killed");
+		game.getGui().loseLife();
+		this.setPos(1920/2, 1080/2);
+		this.setVelocity(0, 0);
 	}
 	
 	public void tick() {											//updates all variables for the ship
@@ -96,5 +99,13 @@ public class Ship {
 		//translation
 											
 		polygon.translate(globX, globY);															//translate the ship from 0,0 to globalX globalY
+	}
+	public void setPos(int x, int y) {
+		globX = x;
+		globY = y;
+	}
+	public void setVelocity (int velocityX, int velocityY) {
+		speedX = velocityX;
+		speedY = velocityY;
 	}
 }

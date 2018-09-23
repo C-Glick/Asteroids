@@ -18,6 +18,7 @@ public class Game implements Runnable{
 	public int width,height;
 	public String title;
 	private boolean running = false;
+	private boolean endGame = false;
 	
 	private Display display;
 	private Thread thread;
@@ -76,6 +77,12 @@ public class Game implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void end() {
+		endGame=true;
+		render();
+		running=false;
 	}
 	
 	public void run() {
@@ -206,6 +213,15 @@ public class Game implements Runnable{
 		g.drawString("Score: "+ gui.score, 80, 100);
 		g.drawString("Time: "+ gui.time, 1750, 100);
 		g.setFont(new Font("Courier New", Font.PLAIN, 50));
+		
+		
+		//endgame rendering
+		if(endGame) {
+			String message = "END GAME YOUR FINAL SCORE WAS: "+ gui.getScore();
+				g.drawString(message, 400, 500);
+				g.drawString("press enter to restart", 700, 800);
+			
+		}
 
 		
 		//end rendering------------------------------

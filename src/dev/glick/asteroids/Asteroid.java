@@ -74,14 +74,16 @@ public class Asteroid {
 	
 	public void destroy() {
 		if (large) {
+			game.getGui().pointsLowInc();
 			for(int i=0; i<4; i++) {
 				asteroidMang.createAsteroid(globX, globY, asteroidMang.randomSpeed(),asteroidMang.randomSpeed() , false);
 			}
 			large = false;
-			this.destroy();
+			asteroidMang.removeAsteroid(this);
 
 		}
 		else {
+			game.getGui().pointsHighInc();
 			asteroidMang.removeAsteroid(this);
 		}
 	}
